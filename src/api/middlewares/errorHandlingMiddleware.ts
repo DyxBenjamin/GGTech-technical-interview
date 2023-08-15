@@ -30,7 +30,7 @@ const errorHandlingMiddleware = (err: ServerError, req: Request , res: Response,
         return next(err);
     }
     // eslint-disable-next-line no-console
-    console.error(err);
+    const message = err.message || 'Internal Server Error';
     if (err instanceof ServerError) {
         res.status(err.statusCode).json({
             status: 'error',
@@ -43,13 +43,10 @@ const errorHandlingMiddleware = (err: ServerError, req: Request , res: Response,
         return;
     }
 
-    // Other especific handler for other kind of errors
-    // ...
-
     const genericError = new ServerError('INTERNAL_ERROR');
     res.status(genericError.statusCode).json({
         status: 'error',
-        message: genericError.message,
+        message,
         help: genericError.solution,
         meta:{
             timestamp: new Date().toISOString()

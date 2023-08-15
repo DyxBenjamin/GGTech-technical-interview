@@ -25,10 +25,12 @@ class MovieQueryController {
 
     async list(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const page: number = Number(req.query.page) || 1;
-            const limit: number = Number(req.query.limit) || 10;
+            const page = Number(req.query.page) || 1;
+            const limit = Number(req.query.limit) || 10;
+
             const movies = await MovieServices.listMovies({ page, limit });
             const count = await MovieServices.countMovies();
+
             if (!movies && count === 0 ) {
                 throw new ServerError('NOT_FOUND')
             }
@@ -36,19 +38,19 @@ class MovieQueryController {
                 status: 'success',
                 data: movies,
                 pagination: {
-                    page:{
+                    page: {
                         current: page,
                         size: limit,
-                        total: Math.ceil(count/limit)
+                        total: Math.ceil(count / limit)
                     },
-                    items:{
+                    items: {
                         count: count
                     },
-                    links:{
+                    links: {
                         first: `/api/movies?page=1&limit=${limit}`,
-                        previous: page > 1 ? `/api/movies?page=${page-1}&limit=${limit}` : null,
-                        next: page < Math.ceil(count/limit) ? `/api/movies?page=${page+1}&limit=${limit}` : null,
-                        last: `/api/movies?page=${Math.ceil(count/limit)}&limit=${limit}`
+                        previous: page > 1 ? `/api/movies?page=${page - 1}&limit=${limit}` : null,
+                        next: page < Math.ceil(count / limit) ? `/api/movies?page=${page + 1}&limit=${limit}` : null,
+                        last: `/api/movies?page=${Math.ceil(count / limit)}&limit=${limit}`
                     }
                 },
                 meta: {
@@ -58,7 +60,6 @@ class MovieQueryController {
         } catch (e) {
             next(e)
         }
-
     }
 }
 

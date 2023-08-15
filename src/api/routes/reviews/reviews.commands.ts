@@ -4,7 +4,12 @@ import {Request, Response} from "express";
 class ReviewsCommandsController {
     async create(req: Request, res: Response): Promise<void> {
         const reviewData = req.body;
-        const newReview = await ReviewServices.createReview(reviewData);
+        const {movieId} = req.params;
+        const payload = {
+            ...reviewData,
+            movie: movieId
+        }
+        const newReview = await ReviewServices.createReview(payload);
         res.status(201).json({
             status: 'success',
             message: 'Review created',

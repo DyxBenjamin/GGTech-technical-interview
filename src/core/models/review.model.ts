@@ -1,7 +1,7 @@
-import {Schema, Document, Types} from "mongoose";
+import {Document, Schema, Types} from "mongoose";
 
 export interface ReviewInterface {
-    id: Types.ObjectId;
+    id?: Types.ObjectId;
     movie: Types.ObjectId;
     platform: Types.ObjectId;
     author: string;

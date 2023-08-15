@@ -2,18 +2,19 @@ import {Document, Schema, Types} from 'mongoose';
 import {PlatformInterface} from "@core/models/platform.model";
 import {ReviewInterface} from "@core/models/review.model";
 import slugify from "slugify";
+
 export interface MovieInterface {
-    id: Types.ObjectId;
+    id?: Types.ObjectId;
     title: string;
     overview: string;
-    slug: string;
+    slug?: string;
     image: string;
     director: string;
-    languages: Array<string>;
-    score: number;
-    genders: Array<string>;
+    languages?: Array<string>;
+    score?: number;
+    genre?: Array<string>;
     platforms: Array<PlatformInterface>;
-    reviews: Array<ReviewInterface>;
+    reviews?: Array<ReviewInterface>;
     releaseDate: Date;
     createdAt?: Date;
     updatedAt?: Date;
@@ -33,6 +34,7 @@ export const MovieSchema = new Schema<MovieSchemaInterface>({
     slug: {
         type: String,
         required: false,
+        unique: true,
     },
     image: {
         type: String,
@@ -46,7 +48,7 @@ export const MovieSchema = new Schema<MovieSchemaInterface>({
         type: [String],
         required: true,
     },
-    genders: [{ type: Schema.Types.ObjectId, ref: 'Genders', optional: true }],
+    genre: [{ type: Schema.Types.ObjectId, ref: 'Genders', optional: true }],
     platforms: [{ type: Schema.Types.ObjectId, ref: 'Platforms', optional: true }],
     reviews: [{ type: Schema.Types.ObjectId, ref: 'Reviews', opcional: true }],
     createdAt: {
@@ -55,7 +57,7 @@ export const MovieSchema = new Schema<MovieSchemaInterface>({
     },
     updatedAt: {
         type: Date,
-        default: null,
+        default: Date.now,
     }
 }, {
     toJSON: {
@@ -86,8 +88,8 @@ MovieSchema.set('toJSON', {
     }
 });
 
-MovieSchema.pre<MovieSchemaInterface>('save', function (next) {
+MovieSchema.pre<MovieSchemaInterface>('save', async function (next) {
+    if(this.slug) {return next();}
     this.slug = slugify(this.title, {lower: true, strict: true});
     next();
 });
-

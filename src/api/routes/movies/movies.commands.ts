@@ -17,7 +17,25 @@ class MovieCommandController {
                 }
             });
         } catch (e) {
-            next(new ServerError('BAD_REQUEST'))
+            next(e)
+        }
+    }
+
+    async clone(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const {id} = req.params;
+            const clonedMovie = await MovieServices.cloneMovie(id);
+            res.status(201).json({
+                status: 'success',
+                message: 'Movie cloned',
+                data: clonedMovie,
+                meta: {
+                    location: `/api/movies/${clonedMovie.id}`,
+                    timestamp: new Date().toISOString()
+                }
+            });
+        } catch (e) {
+            next(e)
         }
     }
 
@@ -36,7 +54,7 @@ class MovieCommandController {
                 }
             });
         } catch (e) {
-            next(new ServerError('BAD_REQUEST'))
+            next(e)
         }
     }
 
@@ -49,7 +67,7 @@ class MovieCommandController {
             }
             res.status(200).send({
                     status: 'success',
-                    message: 'Movie deleted',
+                    message: 'Movie and reviews deleted',
                     meta: {
                         timestamp: new Date().toISOString()
                     }

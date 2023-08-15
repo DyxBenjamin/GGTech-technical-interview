@@ -1,5 +1,5 @@
-import { Model, model, models } from "mongoose";
-import { ReviewInterface, ReviewSchema, ReviewSchemaInterface } from "@core/models/review.model";
+import {Model, model, models, UpdateQuery} from "mongoose";
+import {ReviewInterface, ReviewSchema, ReviewSchemaInterface} from "@core/models/review.model";
 
 const Reviews: Model<ReviewSchemaInterface> = models.Reviews || model<ReviewSchemaInterface>('Reviews', ReviewSchema);
 
@@ -24,13 +24,22 @@ class ReviewRepository {
     }
 
     /**
+     * Finds all reviews for a movie by its ID.
+     * @param movieId
+     * @returns An array of reviews.
+     */
+    async findByMovieId(movieId: string): Promise<Array<ReviewSchemaInterface>> {
+        return Reviews.find({ movie: movieId }).exec();
+    }
+
+    /**
      * Updates a review by its ID.
      * @param reviewId - ID of the review to update.
-     * @param reviewData - New data for the review.
+     * @param update - New data for the review.
      * @returns The updated review or null.
      */
-    async update(reviewId: string, reviewData: Partial<Omit<ReviewInterface, 'id'>>): Promise<ReviewSchemaInterface | null> {
-        return Reviews.findByIdAndUpdate(reviewId, reviewData, { new: true }).exec();
+    async update(reviewId: string,  update: UpdateQuery<unknown>): Promise<ReviewSchemaInterface | null> {
+        return Reviews.findByIdAndUpdate(reviewId, update).exec();
     }
 
     /**

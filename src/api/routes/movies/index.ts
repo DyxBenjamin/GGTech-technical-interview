@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import {Router} from 'express';
 import validator from './movies.validator';
 import queries from "@api/routes/movies/movies.queries";
 import commands from "@api/routes/movies/movies.commands";
@@ -23,7 +23,7 @@ moviesRouter.put('/:id', ...validator.validate('update'), commands.update);
 moviesRouter.delete('/:id', ...validator.validate('delete'), commands.delete);
 
 // Clone a specific movie by ID
-// moviesRouter.post('/:id', ...validator.validate('get'), commands.clone);
+moviesRouter.post('/:id', ...validator.validate('get'), commands.clone);
 
 
 export default moviesRouter;

@@ -1,18 +1,23 @@
 import ReviewRepository from "@core/repositories/review.repository";
 import {ReviewInterface, ReviewSchemaInterface} from "@core/models/review.model";
-import MovieRepository from "@core/repositories/movie.repository";
+import {UpdateQuery} from "mongoose";
+import MovieServices from "@core/services/movie.services";
 
 class ReviewServices {
     async createReview(reviewData: Omit<ReviewInterface, 'id'>): Promise<ReviewSchemaInterface> {
         const newReview = await ReviewRepository.create(reviewData);
-        await MovieRepository.update(String(reviewData.movie), {$push: {reviews: newReview.id}});
+        await MovieServices.updateMovie(String(reviewData.movie), {$push: {reviews: newReview.id}});
         return newReview;
     }
     async getReviewById(reviewId: string): Promise<ReviewSchemaInterface> {
         return ReviewRepository.findById(reviewId);
     }
-    async updateReview(reviewId: string, reviewData: Partial<ReviewInterface>): Promise<ReviewSchemaInterface> {
-        return ReviewRepository.update(reviewId, reviewData);
+    async getReviewsByMovieId(movieId: string): Promise<Array<ReviewSchemaInterface>> {
+        return ReviewRepository.findByMovieId(movieId);
+    }
+    async updateReview(reviewId: string,  update: UpdateQuery<unknown>): Promise<ReviewSchemaInterface> {
+        update.updatedAt = new Date();
+        return ReviewRepository.update(reviewId, update);
     }
     async deleteReview(reviewId: string): Promise<ReviewSchemaInterface> {
         return ReviewRepository.delete(reviewId);

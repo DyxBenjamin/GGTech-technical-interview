@@ -5,7 +5,14 @@ class MoviesValidator {
     validations = {
         create: [
             check('title').notEmpty().withMessage('Title is required'),
+            check('overview').notEmpty().withMessage('Overview is required'),
             check('image').notEmpty().withMessage('Image is required'),
+            check('image').isURL().withMessage('Image is not valid'),
+            check('director').notEmpty().withMessage('Director is required'),
+            check('platforms').notEmpty().withMessage('Platforms is required'),
+            check('platforms').isArray().withMessage('Platforms is not valid'),
+            check('platforms.*.id').isMongoId().withMessage('Platform id is not valid'),
+            check('releaseDate').notEmpty().withMessage('Release date is required'),
         ],
         get: [
             check('id').notEmpty().withMessage('Movie ID is required'),
@@ -14,11 +21,6 @@ class MoviesValidator {
         update: [
             check('id').notEmpty().withMessage('Movie ID is required'),
             check('id').isMongoId().withMessage('Movie ID is not valid'),
-            check('title').notEmpty().withMessage('Title is required'),
-            check('image').notEmpty().withMessage('Image is required'),
-            check('score').notEmpty().withMessage('Score is required'),
-            check('platforms').notEmpty().withMessage('Platforms is required'),
-            check('reviews').notEmpty().withMessage('Reviews is required')
         ],
         delete: [
             check('id').notEmpty().withMessage('Movie ID is required'),

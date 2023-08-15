@@ -11,7 +11,7 @@ async function connectDatabase(): Promise<mongoose.Connection> {
             connectTimeoutMS: 30000,
         });
         // eslint-disable-next-line no-console
-        console.log('Database connected');
+        console.log('💾  Data persistence systems in operation');
         return mongoose.connection;
     } catch (error) {
         // eslint-disable-next-line no-console

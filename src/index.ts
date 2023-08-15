@@ -29,14 +29,14 @@ connectDatabase().then((connection:Connection) => {
 // app.use('/api/serverInfo', serverRouter);
 app.use('/api/v1/movies', moviesRouter);
 app.use('/api/v1/platforms', platformsRouter);
-app.use('/api/v1/reviews', reviewsRouter);
+app.use('/api/v1', reviewsRouter);
 
 // Error handling
 app.use(errorHandlingMiddleware);
 
 app.listen(port, () => {
     // eslint-disable-next-line no-console
-    console.log(`Server is alive and listening on port ${port} 🚀`);
+    console.log(`🚀  The server has been successfully deployed`);
     // eslint-disable-next-line no-console
-    console.log(`${protocol}://${host}:${port}`);
+    console.log(`🛰  External communication enabled via: ${protocol}://${host}:${port}`);
 });

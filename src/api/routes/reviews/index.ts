@@ -3,6 +3,6 @@ import commands from "@api/routes/reviews/reviews.commands";
 
 const reviewsRouter = Router()
 
-reviewsRouter.post('/', commands.create)
+reviewsRouter.post('/movies/:movieId/reviews', commands.create)
 
 export default reviewsRouter
