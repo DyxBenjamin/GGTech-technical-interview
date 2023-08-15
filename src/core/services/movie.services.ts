@@ -38,7 +38,6 @@ class MovieServices {
             languages: movie.languages,
             genre: movie.genre,
             platforms: movie.platforms,
-            releaseDate: movie.releaseDate,
             slug: newSlug
         });
         await Promise.all(movie.reviews.map(async (reviewId) => {

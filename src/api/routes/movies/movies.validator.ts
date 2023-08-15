@@ -12,7 +12,6 @@ class MoviesValidator {
             check('platforms').notEmpty().withMessage('Platforms is required'),
             check('platforms').isArray().withMessage('Platforms is not valid'),
             check('platforms.*.id').isMongoId().withMessage('Platform id is not valid'),
-            check('releaseDate').notEmpty().withMessage('Release date is required'),
         ],
         get: [
             check('id').notEmpty().withMessage('Movie ID is required'),

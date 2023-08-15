@@ -1,13 +1,14 @@
 import {NextFunction, Request, Response} from 'express';
 import MovieServices from "@core/services/movie.services";
 import {ServerError} from "@api/middlewares/errorHandlingMiddleware";
+import * as _ from "lodash";
 
 class MovieQueryController {
     async getById(req: Request, res: Response, next: NextFunction ): Promise<void> {
         try {
             const { id } = req.params;
             const movie = await MovieServices.getMovieById(id);
-            if (!movie) {
+            if (_.isEmpty(movie)) {
                 throw new ServerError('NOT_FOUND')
             }
             res.status(200).json({

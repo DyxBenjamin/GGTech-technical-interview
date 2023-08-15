@@ -15,7 +15,6 @@ export interface MovieInterface {
     genre?: Array<string>;
     platforms: Array<PlatformInterface>;
     reviews?: Array<ReviewInterface>;
-    releaseDate: Date;
     createdAt?: Date;
     updatedAt?: Date;
 }
