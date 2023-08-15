@@ -1,0 +1,27 @@
+# .gitignore
+
+# Deps
+node_modules/
+
+# Build
+dist/
+
+# Environment
+.env
+.env.test
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*.bak
+
+# Temp files
+*.tmp
+*.temp
+
+# System Files
+.DS_Store
+Thumbs.db

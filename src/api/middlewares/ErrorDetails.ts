@@ -1,0 +1,110 @@
+export const ErrorDetails = Object.freeze( {
+    VALIDATION_ERROR: {
+        statusCode: 400,
+        code: 1001,
+        message: 'Validation failed.',
+        solution: 'Please check your data and try again.',
+    },
+    CAST_ERROR: {
+        statusCode: 400,
+        code: 1002,
+        message: 'Invalid ID format.',
+        solution: 'Ensure the ID provided is in the correct format.',
+    },
+    NOT_FOUND: {
+        statusCode: 404,
+        code: 1003,
+        message: 'Resource not found.',
+        solution: 'Check the resource ID or the endpoint you are accessing.',
+    },
+    INTERNAL_ERROR: {
+        statusCode: 500,
+        code: 5000,
+        message: 'Internal server error.',
+        solution: 'Try again later or contact support.',
+    },
+    UNAUTHORIZED: {
+        statusCode: 401,
+        code: 1004,
+        message: 'Unauthorized.',
+        solution: 'Check your credentials and try again.',
+    },
+    FORBIDDEN: {
+        statusCode: 403,
+        code: 1005,
+        message: 'Forbidden.',
+        solution: 'Check your credentials and try again.',
+    },
+    CONFLICT: {
+        statusCode: 409,
+        code: 1006,
+        message: 'Conflict.',
+        solution: 'Check your data and try again.',
+    },
+    BAD_REQUEST: {
+        statusCode: 400,
+        code: 1007,
+        message: 'Bad request.',
+        solution: 'Check your data and try again.',
+    },
+    TOO_MANY_REQUESTS: {
+        statusCode: 429,
+        code: 1008,
+        message: 'Too many requests.',
+        solution: 'Try again later.',
+    },
+    UNPROCESSABLE_ENTITY: {
+        statusCode: 422,
+        code: 1009,
+        message: 'Unprocessable entity.',
+        solution: 'Check your data and try again.',
+    },
+    GONE: {
+        statusCode: 410,
+        code: 1010,
+        message: 'Resource no longer exists.',
+        solution: 'Check the resource ID or the endpoint you are accessing.',
+    },
+    PAYMENT_REQUIRED: {
+        statusCode: 402,
+        code: 1011,
+        message: 'Payment required.',
+        solution: 'Check your payment details and try again.',
+    },
+    SERVICE_UNAVAILABLE: {
+        statusCode: 503,
+        code: 1012,
+        message: 'Service unavailable.',
+        solution: 'Try again later.',
+    },
+    NOT_IMPLEMENTED: {
+        statusCode: 501,
+        code: 1013,
+        message: 'Not implemented.',
+        solution: 'Try again later.',
+    },
+    BAD_GATEWAY: {
+        statusCode: 502,
+        code: 1014,
+        message: 'Bad gateway.',
+        solution: 'Try again later.',
+    },
+    NETWORK_ERROR: {
+        statusCode: 503,
+        code: 1015,
+        message: 'Network error.',
+        solution: 'Try again later.',
+    },
+    TIMEOUT: {
+        statusCode: 504,
+        code: 1016,
+        message: 'Request timed out.',
+        solution: 'Try again later.',
+    },
+    UNKNOWN_ERROR: {
+        statusCode: 500,
+        code: 1017,
+        message: 'Unknown error.',
+        solution: 'Try again later.',
+    }
+});
