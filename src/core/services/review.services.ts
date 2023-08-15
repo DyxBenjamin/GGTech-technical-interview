@@ -2,10 +2,21 @@ import ReviewRepository from "@core/repositories/review.repository";
 import {ReviewInterface, ReviewSchemaInterface} from "@core/models/review.model";
 import {UpdateQuery} from "mongoose";
 import MovieServices from "@core/services/movie.services";
+import * as _ from "lodash";
+import platformServices from "@core/services/platform.services";
 
 class ReviewServices {
     async createReview(reviewData: Omit<ReviewInterface, 'id'>): Promise<ReviewSchemaInterface> {
+        const existMovie = await MovieServices.getMovieById(String(reviewData.movie));
+        const existPlatform = await platformServices.getPlatformById(String(reviewData.platform));
+        if (_.isEmpty(existMovie)) {
+            throw new Error('Movie not found');
+        }
+        if (_.isEmpty(existPlatform)){
+            throw new Error('Platform not found')
+        }
         const newReview = await ReviewRepository.create(reviewData);
+
         await MovieServices.updateMovie(String(reviewData.movie), {$push: {reviews: newReview.id}});
         return newReview;
     }

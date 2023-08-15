@@ -48,7 +48,10 @@ export const MovieSchema = new Schema<MovieSchemaInterface>({
         type: [String],
         required: true,
     },
-    genre: [{ type: Schema.Types.ObjectId, ref: 'Genders', optional: true }],
+    genre: {
+        type: [String],
+        required: false,
+    },
     platforms: [{ type: Schema.Types.ObjectId, ref: 'Platforms', optional: true }],
     reviews: [{ type: Schema.Types.ObjectId, ref: 'Reviews', opcional: true }],
     createdAt: {

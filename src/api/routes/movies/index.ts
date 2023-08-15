@@ -23,7 +23,7 @@ moviesRouter.put('/:id', ...validator.validate('update'), commands.update);
 moviesRouter.delete('/:id', ...validator.validate('delete'), commands.delete);
 
 // Clone a specific movie by ID
-moviesRouter.post('/:id', ...validator.validate('get'), commands.clone);
+moviesRouter.post('/:id/clone', ...validator.validate('get'), commands.clone);
 
 
 export default moviesRouter;

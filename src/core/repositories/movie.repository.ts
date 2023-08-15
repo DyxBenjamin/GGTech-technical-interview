@@ -137,6 +137,8 @@ class MovieRepository {
         return Movies.find()
             .skip((page - 1) * limit)
             .limit(limit)
+            .populate('reviews')
+            .populate('platforms')
             .exec();
     }
 
