@@ -1,5 +1,5 @@
 import {ErrorDetails} from "@api/middlewares/ErrorDetails";
-import {Response} from "express";
+import {NextFunction, Request, Response} from "express";
 
 class ServerError extends Error {
     type: keyof typeof ErrorDetails;
@@ -25,27 +25,35 @@ class ServerError extends Error {
     }
 }
 
-const errorHandlingMiddleware = (err: unknown, res: Response): Response => {
+const errorHandlingMiddleware = (err: ServerError, req: Request , res: Response, next: NextFunction): void => {
+    if (res.headersSent) {
+        return next(err);
+    }
+    // eslint-disable-next-line no-console
+    console.error(err);
     if (err instanceof ServerError) {
-        return res.status(err.statusCode).json({
+        res.status(err.statusCode).json({
             status: 'error',
-            code: err.errorCode,
             message: err.message,
-            solution: err.solution
+            help: err.solution,
+            meta:{
+                timestamp: new Date().toISOString()
+            }
         });
+        return;
     }
 
     // Other especific handler for other kind of errors
     // ...
 
-    // eslint-disable-next-line no-console
-    console.error('Server Error:', err);
     const genericError = new ServerError('INTERNAL_ERROR');
-    return res.status(genericError.statusCode).json({
+    res.status(genericError.statusCode).json({
         status: 'error',
-        code: genericError.errorCode,
         message: genericError.message,
-        solution: genericError.solution
+        help: genericError.solution,
+        meta:{
+            timestamp: new Date().toISOString()
+        }
     });
 }
 

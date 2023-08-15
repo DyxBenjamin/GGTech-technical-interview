@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "deps:clean": "rm -rf node_modules package-lock.json && npm install",
     "deps:upgrade": "ncu -u && npm install",
-    "start": "ts-node src/index.ts",
+    "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
     "lint": "eslint --ext .ts src"
   },

@@ -1,4 +1,5 @@
 import * as express from 'express';
+import {Application} from 'express';
 import * as cors from 'cors';
 import * as bodyParser from 'body-parser';
 import moviesRouter from "@api/routes/movies";
@@ -7,17 +8,22 @@ import connectDatabase from "@infrastructure/db/mongoose";
 import * as dotenv from 'dotenv';
 import platformsRouter from "@api/routes/platforms";
 import reviewsRouter from "@api/routes/reviews";
+import {Connection} from "mongoose";
+
 dotenv.config();
 
-const app = express();
-
-app.use(express.static('api'));
-
+const app: Application = express();
+const host = process.env.HOST || 'localhost';
+const protocol = host === 'localhost' ? 'http' : 'https';
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
 
-connectDatabase().then()
+connectDatabase().then((connection:Connection) => {
+    // eslint-disable-next-line no-console
+    connection.on('error', console.error.bind(console, 'Database error:'));
+});
 
 // Routes
 // app.use('/api/serverInfo', serverRouter);
@@ -28,9 +34,6 @@ app.use('/api/v1/reviews', reviewsRouter);
 // Error handling
 app.use(errorHandlingMiddleware);
 
-const host = process.env.HOST || 'localhost';
-const protocol = host === 'localhost' ? 'http' : 'https';
-const port = process.env.PORT || 3000;
 app.listen(port, () => {
     // eslint-disable-next-line no-console
     console.log(`Server is alive and listening on port ${port} 🚀`);

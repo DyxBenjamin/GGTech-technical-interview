@@ -1,47 +1,63 @@
 import MovieServices from "@core/services/movie.services";
-import {Request, Response} from "express";
+import {NextFunction, Request, Response} from "express";
+import {ServerError} from "@api/middlewares/errorHandlingMiddleware";
 
 class MovieCommandController {
-    async create(req: Request, res: Response): Promise<void> {
-        const movieData = req.body;
-        const newMovie = await MovieServices.createMovie(movieData);
-        res.status(201).json({
-            status: 'success',
-            message: 'Movie created',
-            data: newMovie,
-            meta: {
-                location: `/api/movies/${newMovie.id}`,
-                timestamp: new Date().toISOString()
-            }
-        });
-    }
-
-    async update(req: Request, res: Response): Promise<void> {
-        const {id} = req.params;
-        const movieData = req.body;
-        const updatedMovie = await MovieServices.updateMovie(id, movieData);
-        res.status(200).json({
-            status: 'success',
-            message: 'Movie updated',
-            data: updatedMovie,
-            meta: {
-                location: `/api/movies/${updatedMovie.id}`,
-                timestamp: new Date().toISOString()
-            }
-        });
-    }
-
-    async delete(req: Request, res: Response): Promise<void> {
-        const {id} = req.params;
-        await MovieServices.deleteMovie(id);
-        res.status(204).send({
+    async create(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const movieData = req.body;
+            const newMovie = await MovieServices.createMovie(movieData);
+            res.status(201).json({
                 status: 'success',
-                message: 'Movie deleted',
+                message: 'Movie created',
+                data: newMovie,
                 meta: {
+                    location: `/api/movies/${newMovie.id}`,
                     timestamp: new Date().toISOString()
                 }
+            });
+        } catch (e) {
+            next(new ServerError('BAD_REQUEST'))
+        }
+    }
+
+    async update(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const {id} = req.params;
+            const movieData = req.body;
+            const updatedMovie = await MovieServices.updateMovie(id, movieData);
+            res.status(200).json({
+                status: 'success',
+                message: 'Movie updated',
+                data: updatedMovie,
+                meta: {
+                    location: `/api/movies/${updatedMovie.id}`,
+                    timestamp: new Date().toISOString()
+                }
+            });
+        } catch (e) {
+            next(new ServerError('BAD_REQUEST'))
+        }
+    }
+
+    async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const {id} = req.params;
+            const movie = await MovieServices.deleteMovie(id);
+            if (!movie) {
+                throw new ServerError('NOT_FOUND');
             }
-        );
+            res.status(200).send({
+                    status: 'success',
+                    message: 'Movie deleted',
+                    meta: {
+                        timestamp: new Date().toISOString()
+                    }
+                }
+            );
+        } catch (e) {
+            next(e)
+        }
     }
 }
 
