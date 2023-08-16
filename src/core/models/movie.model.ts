@@ -76,7 +76,7 @@ MovieSchema.virtual('id').get(function (this: MovieSchemaInterface) {
 
 MovieSchema.virtual('score').get(function (this: MovieSchemaInterface) {
     let score = 0;
-    if (this.reviews.length > 0) {
+    if ( this.reviews && this.reviews.length > 0) {
         score = this.reviews.reduce((acc, review) => acc + review.score, 0) / this.reviews.length;
     }
     return score;

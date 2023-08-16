@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
 import MovieServices from "@core/services/movie.services";
 import {ServerError} from "@api/middlewares/errorHandlingMiddleware";
-import * as _ from "lodash";
+import _ from "lodash";
 
 class MovieQueryController {
     async getById(req: Request, res: Response, next: NextFunction ): Promise<void> {

@@ -1,11 +1,10 @@
-import * as express from 'express';
-import {Application} from 'express';
-import * as cors from 'cors';
-import * as bodyParser from 'body-parser';
+import express, {Application} from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
 import moviesRouter from "@api/routes/movies";
 import {errorHandlingMiddleware} from "@api/middlewares/errorHandlingMiddleware";
 import connectDatabase from "@infrastructure/db/mongoose";
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 import platformsRouter from "@api/routes/platforms";
 import reviewsRouter from "@api/routes/reviews";
 import {Connection} from "mongoose";

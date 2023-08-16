@@ -2,7 +2,7 @@ import ReviewRepository from "@core/repositories/review.repository";
 import {ReviewInterface, ReviewSchemaInterface} from "@core/models/review.model";
 import {UpdateQuery} from "mongoose";
 import MovieServices from "@core/services/movie.services";
-import * as _ from "lodash";
+import _ from "lodash";
 import platformServices from "@core/services/platform.services";
 
 class ReviewServices {
@@ -20,17 +20,17 @@ class ReviewServices {
         await MovieServices.updateMovie(String(reviewData.movie), {$push: {reviews: newReview.id}});
         return newReview;
     }
-    async getReviewById(reviewId: string): Promise<ReviewSchemaInterface> {
+    async getReviewById(reviewId: string): Promise<ReviewSchemaInterface | null> {
         return ReviewRepository.findById(reviewId);
     }
     async getReviewsByMovieId(movieId: string): Promise<Array<ReviewSchemaInterface>> {
         return ReviewRepository.findByMovieId(movieId);
     }
-    async updateReview(reviewId: string,  update: UpdateQuery<unknown>): Promise<ReviewSchemaInterface> {
+    async updateReview(reviewId: string,  update: UpdateQuery<unknown>): Promise<ReviewSchemaInterface | null> {
         update.updatedAt = new Date();
         return ReviewRepository.update(reviewId, update);
     }
-    async deleteReview(reviewId: string): Promise<ReviewSchemaInterface> {
+    async deleteReview(reviewId: string): Promise<ReviewSchemaInterface | null> {
         return ReviewRepository.delete(reviewId);
     }
     async listReviews(): Promise<Array<ReviewSchemaInterface>> {

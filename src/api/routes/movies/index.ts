@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import validator from './movies.validator';
-import queries from "@api/routes/movies/movies.queries";
-import commands from "@api/routes/movies/movies.commands";
+import queries from './movies.queries';
+import commands from './movies.commands';
 
 const moviesRouter = Router();
 

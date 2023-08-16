@@ -6,7 +6,7 @@ async function connectDatabase(): Promise<mongoose.Connection> {
     }
 
     try {
-        await mongoose.connect(process.env.MONGO_DB_URI,{
+        await mongoose.connect(String(process.env.MONGO_DB_URI),{
             socketTimeoutMS: 30000,
             connectTimeoutMS: 30000,
         });

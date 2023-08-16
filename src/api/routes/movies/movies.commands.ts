@@ -30,7 +30,7 @@ class MovieCommandController {
                 message: 'Movie cloned',
                 data: clonedMovie,
                 meta: {
-                    location: `/api/movies/${clonedMovie.id}`,
+                    location: `/api/movies/${clonedMovie?.id}`,
                     timestamp: new Date().toISOString()
                 }
             });
@@ -49,7 +49,7 @@ class MovieCommandController {
                 message: 'Movie updated',
                 data: updatedMovie,
                 meta: {
-                    location: `/api/movies/${updatedMovie.id}`,
+                    location: `/api/movies/${updatedMovie?.id}`,
                     timestamp: new Date().toISOString()
                 }
             });

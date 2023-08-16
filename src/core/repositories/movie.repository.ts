@@ -133,7 +133,7 @@ class MovieRepository {
      * @param limit - Number of movies per page.
      * @returns An array of movies.
      */
-    async list({ page, limit }): Promise<MovieSchemaInterface[]> {
+    async list({ page, limit } : { page: number, limit: number }): Promise<MovieSchemaInterface[]> {
         return Movies.find()
             .skip((page - 1) * limit)
             .limit(limit)
