@@ -9,6 +9,7 @@
     "deps:upgrade": "ncu -u && npm install",
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
     "build": "tsc && tsc-alias && node dist/index.js",
+    "prod": "node dist/index.js",
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
     "lint": "eslint --ext .ts src"
   },
