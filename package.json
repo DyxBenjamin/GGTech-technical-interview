@@ -8,7 +8,7 @@
     "deps:clean": "rm -rf node_modules package-lock.json && npm install",
     "deps:upgrade": "ncu -u && npm install",
     "start": "ts-node -r tsconfig-paths/register src/index.ts",
-    "build": "tsc && tsc-alias && node dist/index.js",
+    "build": "tsc && tsc-alias",
     "prod": "node dist/index.js",
     "dev": "nodemon --exec ts-node -r tsconfig-paths/register src/index.ts",
     "lint": "eslint --ext .ts src"
@@ -24,18 +24,18 @@
     "lodash": "^4.17.21",
     "mongoose": "^7.4.3",
     "slugify": "^1.6.6",
-    "typescript": "^5.1.6",
-    "@types/cors": "^2.8.13",
-    "@types/lodash": "^4.14.197",
-    "tsc-alias": "^1.8.7"
+    "typescript": "^5.1.6"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/lodash": "^4.14.197",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",
     "eslint": "^8.47.0",
     "eslint-plugin-security": "^1.7.1",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.7",
     "tsconfig-paths": "^4.2.0"
   }
 }
