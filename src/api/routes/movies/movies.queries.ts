@@ -5,9 +5,13 @@ import _ from "lodash";
 
 class MovieQueryController {
     async getById(req: Request, res: Response, next: NextFunction ): Promise<void> {
+        console.log('%c << ▶️ getById >>', 'color: white; font-size: 16px');
+
         try {
             const { id } = req.params;
             const movie = await MovieServices.getMovieById(id);
+            console.log('%c << 📌 movie >>', 'color: white; font-size: 12px');
+            console.log(movie);
             if (_.isEmpty(movie)) {
                 throw new ServerError('NOT_FOUND')
             }

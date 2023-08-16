@@ -25,83 +25,89 @@ class MovieRepository {
 
     async findAndGroupByPlatform(movieId: string): Promise<Array<HydratedDocument<MovieSchemaInterface, unknown>>> {
         return Movies.aggregate([
-            {
-                $match: {
-                    _id: new Types.ObjectId(movieId)
-                },
-            },
-            {
-                $lookup: {
-                    from: "reviews",
-                    localField: "_id",
-                    foreignField: "movie",
-                    as: "reviews",
-                },
-            },
-            {
-                $unwind: "$reviews",
-            },
-            {
-                $lookup: {
-                    from: "platforms",
-                    localField: "reviews.platform",
-                    foreignField: "_id",
-                    as: "platformInfo",
-                },
-            },
-            {
-                $unwind: "$platformInfo",
-            },
-            {
-                $group: {
-                    _id: {
-                        platform: "$platformInfo.title",
-                        movieId: "$_id"
-                    },
-                    movieInfo: {
-                        $first: "$$ROOT"
-                    },
-                    reviews: {
-                        $push: "$reviews"
+                {
+                    "$match": {
+                        "_id": new Types.ObjectId(String(movieId))
                     }
-                }
-            },
-            {
-                $group: {
-                    _id: "$_id.movieId",
-                    movieInfo: {
-                        $first: "$movieInfo"
-                    },
-                    reviewsGroups: {
-                        $push: {
-                            platform: "$_id.platform",
-                            reviews: "$reviews"
+                },
+                {
+                    "$lookup": {
+                        "from": "reviews",
+                        "localField": "_id",
+                        "foreignField": "movie",
+                        "as": "reviews"
+                    }
+                },
+                {
+                    "$unwind": {
+                        "path": "$reviews",
+                        "preserveNullAndEmptyArrays": true
+                    }
+                },
+                {
+                    "$lookup": {
+                        "from": "platforms",
+                        "localField": "reviews.platform",
+                        "foreignField": "_id",
+                        "as": "platformInfo"
+                    }
+                },
+                {
+                    "$unwind": {
+                        "path": "$platformInfo",
+                        "preserveNullAndEmptyArrays": true
+                    }
+                },
+                {
+                    "$group": {
+                        "_id": {
+                            "platform": "$platformInfo.title",
+                            "movieId": "$_id"
+                        },
+                        "movieInfo": {
+                            "$first": "$$ROOT"
+                        },
+                        "reviews": {
+                            "$push": "$reviews"
                         }
                     }
-                }
-            },
-            {
-                $replaceRoot: {
-                    newRoot: {
-                        $mergeObjects: ["$movieInfo", {platformReviews: "$reviewsGroups"}]
+                },
+                {
+                    "$group": {
+                        "_id": "$_id.movieId",
+                        "movieInfo": {
+                            "$first": "$movieInfo"
+                        },
+                        "reviewsGroups": {
+                            "$push": {
+                                "platform": "$_id.platform",
+                                "reviews": "$reviews"
+                            }
+                        }
+                    }
+                },
+                {
+                    "$replaceRoot": {
+                        "newRoot": {
+                            "$mergeObjects": ["$movieInfo", {"platformReviews": "$reviewsGroups"}]
+                        }
+                    }
+                },
+                {
+                    "$addFields": {
+                        "id": "$_id"
+                    }
+                },
+                {
+                    "$project": {
+                        "_id": 0,
+                        "platformInfo": 0,
+                        "platforms": 0,
+                        "reviews": 0,
+                        "__v": 0
                     }
                 }
-            },
-            {
-                $set: {
-                    id: "$_id"
-                }
-            },
-            {
-                $project: {
-                    _id: 0,
-                    platformInfo: 0,
-                    platforms: 0,
-                    reviews: 0,
-                    __v: 0
-                }
-            }
-        ]).exec();
+            ]).exec();
     }
 
     async findBySlug(movieSlug: string): Promise<Array<HydratedDocument<MovieSchemaInterface, unknown>>> {

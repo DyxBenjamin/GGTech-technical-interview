@@ -24,6 +24,8 @@ connectDatabase().then((connection:Connection) => {
     connection.on('error', console.error.bind(console, 'Database error:'));
 });
 
+// use Index.html as a landing page
+app.use(express.static('public'));
 // Routes
 // app.use('/api/serverInfo', serverRouter);
 app.use('/api/v1/movies', moviesRouter);
