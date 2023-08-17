@@ -1,4 +1,10 @@
 export const ErrorDetails = Object.freeze( {
+    SLUG_ALREADY_EXISTS: {
+        statusCode: 400,
+        code: 1000,
+        message: 'Slug already exists.',
+        solution: 'Please modify the title and try again.',
+    },
     VALIDATION_ERROR: {
         statusCode: 400,
         code: 1001,

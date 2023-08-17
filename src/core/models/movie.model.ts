@@ -3,6 +3,7 @@ import {PlatformInterface} from "@core/models/platform.model";
 import {ReviewInterface} from "@core/models/review.model";
 import slugify from "slugify";
 import MovieRepository from "@core/repositories/movie.repository";
+import {ServerError} from "@api/middlewares/errorHandlingMiddleware";
 
 export interface MovieInterface {
     id?: Types.ObjectId;
@@ -96,7 +97,7 @@ MovieSchema.pre<MovieSchemaInterface>('save', async function (next) {
     this.slug = slugify(this.title, {lower: true, strict: true});
     const repeatSlug = await MovieRepository.findBySlug(this.slug);
     if (repeatSlug.length > 0) {
-        throw new Error('Slug already exists, please try changing the title');
+        throw new ServerError('SLUG_ALREADY_EXISTS');
     } else {
         next();
     }
