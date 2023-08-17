@@ -95,8 +95,9 @@ MovieSchema.pre<MovieSchemaInterface>('save', async function (next) {
     if(this.slug) {return next();}
     this.slug = slugify(this.title, {lower: true, strict: true});
     const repeatSlug = await MovieRepository.findBySlug(this.slug);
-    if (repeatSlug) {
+    if (repeatSlug.length > 0) {
         throw new Error('Slug already exists, please try changing the title');
+    } else {
+        next();
     }
-    next();
 });
