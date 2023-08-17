@@ -2,6 +2,7 @@ import {Document, Schema, Types} from 'mongoose';
 import {PlatformInterface} from "@core/models/platform.model";
 import {ReviewInterface} from "@core/models/review.model";
 import slugify from "slugify";
+import MovieRepository from "@core/repositories/movie.repository";
 
 export interface MovieInterface {
     id?: Types.ObjectId;
@@ -93,5 +94,9 @@ MovieSchema.set('toJSON', {
 MovieSchema.pre<MovieSchemaInterface>('save', async function (next) {
     if(this.slug) {return next();}
     this.slug = slugify(this.title, {lower: true, strict: true});
+    const repeatSlug = await MovieRepository.findBySlug(this.slug);
+    if (repeatSlug) {
+        throw new Error('Slug already exists, please try changing the title');
+    }
     next();
 });
